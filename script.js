@@ -35,6 +35,12 @@ function clearAll() {
     processStr = '';
     screenProcess.textContent = processStr;
     clearEntry();
+    operandOne = '';
+    operandTwo = '';
+    operator = '';
+    result = '';
+    entryArray = [];
+    processArray = [];
 }
 
 delBtn.onclick = () => del();
@@ -61,16 +67,31 @@ dotBtn.onclick = () => entryDisplay('.');
 
 let entryArray = [];
 let entryStr = '';
+let processArray = [];
+let processStrOne = '';
+let processStrTwo = '';
+let operandOne = '';
+let operandTwo = '';
+let operator = '';
+let result = '';
+let resultRounded;
 
 function entryDisplay(entry) {
-    processArray.push(`${entry}`);
-    entryArray.push(`${entry}`);
-    entryStr = ''; //reset for a clean concat
-    entryStrConcat();
-    screenEntry.textContent = entryStr;
+    if (processArray.length == 0) { //Don't use "="
+        entryArray.push(`${entry}`);
+        entryStrConcat();
+        screenEntry.textContent = entryStr;
+        processArray[0] = entryStr; //Don't use push
+    } else if (processArray.length == 2) {
+        entryArray.push(`${entry}`);
+        entryStrConcat();
+        screenEntry.textContent = entryStr;
+        processArray[2] = entryStr;
+    }
 }
 
 function entryStrConcat() {
+    entryStr = ''; //reset for a clean concat
     for (let i = 0; i < entryArray.length; i++) {
         entryStr += entryArray[i];
     }
@@ -81,17 +102,39 @@ subtractBtn.onclick = () => processDisplay('−');
 multiplyBtn.onclick = () => processDisplay('×');
 divideBtn.onclick = () => processDisplay('÷');
 
-let processArray = [];
-let processStr = '';
-
 function processDisplay(operation) {
-    screenProcess.textContent = `${entryStr} ${operation}`;
-    entryArray = [];
+    if (processArray.length == 1) {
+        processStrOne = processArray[0];
+        processArray[1] = `${operation}`;
+        screenProcess.textContent = `${processStrOne} ${operation}`;
+        entryArray = []; //reset for next entry
+    } else if (processArray.length == 3) {
+        processStrTwo = processArray[2];
+        operation = processArray[1];
+        screenProcess.textContent = `${processStrOne} ${operation} ${processStrTwo} =`;
+        calculate();
+        entryArray = [];
+        processArray = [];  //WIP continue from here
+    }
 }
 
-function calculate(operation) {
-    processDisplay(operation);
-    processStr += processArray[i];
-}
+equalBtn.onclick = () => calculate();
+
+function calculate() {
+    operandOne = processArray[0];
+    operator = processArray[1];
+    operandTwo = entryStr;
+    if (operator === '+') {
+        result = Number(processStrOne) + Number(entryStr);
+    } else if (operator === '−') {
+        result = Number(processStrOne) - Number(entryStr);
+    } else if (operator === '×') {
+        result = Number(processStrOne) * Number(entryStr);
+    } else if (operator === '÷') {
+        result = Number(processStrOne) / Number(entryStr);
+    }
+    resultRounded = Math.round(result * 1000) / 1000;
+    screenEntry.textContent = `${resultRounded}`;
+} 
 
 
