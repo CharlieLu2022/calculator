@@ -28,6 +28,10 @@ body {
     width: 400px;
     height: 100px;
     border: 1px solid gray;
+    text-align: end;
+    vertical-align: middle;
+    font-size: 35px;
+    padding: 5px 10px 0px 0px;
 }
 
 .btnsContainer {
