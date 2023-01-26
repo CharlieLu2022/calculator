@@ -29,6 +29,14 @@ function clearEntry() {
     entryArray = []; //reset for a clean concat
 }
 
+cBtn.onclick = () => clearAll();
+
+function clearAll() {
+    processStr = '';
+    screenProcess.textContent = processStr;
+    clearEntry();
+}
+
 delBtn.onclick = () => del();
 
 function del() {
@@ -55,6 +63,7 @@ let entryArray = [];
 let entryStr = '';
 
 function entryDisplay(entry) {
+    processArray.push(`${entry}`);
     entryArray.push(`${entry}`);
     entryStr = ''; //reset for a clean concat
     entryStrConcat();
@@ -66,3 +75,23 @@ function entryStrConcat() {
         entryStr += entryArray[i];
     }
 }
+
+addBtn.onclick = () => processDisplay('+');
+subtractBtn.onclick = () => processDisplay('−');
+multiplyBtn.onclick = () => processDisplay('×');
+divideBtn.onclick = () => processDisplay('÷');
+
+let processArray = [];
+let processStr = '';
+
+function processDisplay(operation) {
+    screenProcess.textContent = `${entryStr} ${operation}`;
+    entryArray = [];
+}
+
+function calculate(operation) {
+    processDisplay(operation);
+    processStr += processArray[i];
+}
+
+
