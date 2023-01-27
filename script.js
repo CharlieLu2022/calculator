@@ -34,8 +34,6 @@ cBtn.onclick = () => clearAll();
 function clearAll() {
     screenProcess.textContent = '';
     clearEntry();
-    operandOne = '';
-    operandTwo = '';
     operator = '';
     result = '';
     entryArray = [];
@@ -68,13 +66,9 @@ let entryArray = [];
 let entryStr = '';
 let processArray = [];
 let processStrOne = '';
-let processStrTwo = '';
-let operandOne = '';
-let operandTwo = '';
 let operator = '';
 let result = '';
 let resultRounded;
-let operatorOld;
 
 function entryDisplay(entry) {
     entryArray.push(`${entry}`);
@@ -89,7 +83,9 @@ function entryDisplay(entry) {
         processArray[2] = entryStr;
     } else if (processArray.length == 3) {
         processArray[2] = entryStr;
-    } 
+    } else if (processArray.length == 4) {
+        processArray[2] = entryStr;
+    }
 }
 
 function entryStrConcat() {
@@ -103,6 +99,7 @@ addBtn.onclick = () => processDisplay('+');
 subtractBtn.onclick = () => processDisplay('−');
 multiplyBtn.onclick = () => processDisplay('×');
 divideBtn.onclick = () => processDisplay('÷');
+equalBtn.onclick = () => calculate();
 
 
 // Arived Upper approach
@@ -112,19 +109,22 @@ function processDisplay(operation) {
         processStrOne = processArray[0];
         screenProcess.textContent = `${processStrOne} ${operation}`;
         entryArray = []; //reset for next entry
-        return;
     } else if (processArray.length == 3) {
-        operatorOld = processArray[1];
-        processStrTwo = processArray[2];
-        processArray[3] = '='; //Mark presence of '='
-        screenProcess.textContent = `${processStrOne} ${operatorOld} ${processStrTwo} =`;
         calculate(); //Calculate entryScreen display
+        processArray[0] = `${resultRounded}`;
+        processArray[1] = `${operation}`;
+        processArray[3] = 'dummy';
+        screenProcess.textContent = `${resultRounded} ${operation}`;
         entryArray = [];
-        return;
+    } else if (processArray.length == 4) {
+        processStrOne = processArray[0];
+        calculate();
+        screenProcess.textContent = `${resultRounded} ${operation}`;
+        processArray[0] = `${resultRounded}`;
+        processArray[1] = `${operation}`;
+        entryArray = [];
     }
 }
-
-equalBtn.onclick = () => calculate();
 
 function calculate() {
     if (processArray[1] === '+') {
@@ -139,5 +139,3 @@ function calculate() {
     resultRounded = Math.round(result * 1000) / 1000;
     screenEntry.textContent = `${resultRounded}`;
 } 
-
-
