@@ -34,7 +34,6 @@ cBtn.onclick = () => clearAll();
 function clearAll() {
     screenProcess.textContent = '';
     clearEntry();
-    operator = '';
     result = '';
     entryArray = [];
     processArray = [];
@@ -66,7 +65,8 @@ let entryArray = [];
 let entryStr = '';
 let processArray = [];
 let processStrOne = '';
-let operator = '';
+let processStrTwo = '';
+let operatorOne = '';
 let result = '';
 let resultRounded;
 
@@ -99,8 +99,6 @@ addBtn.onclick = () => processDisplay('+');
 subtractBtn.onclick = () => processDisplay('−');
 multiplyBtn.onclick = () => processDisplay('×');
 divideBtn.onclick = () => processDisplay('÷');
-equalBtn.onclick = () => calculate();
-
 
 // Arived Upper approach
 function processDisplay(operation) {
@@ -123,7 +121,17 @@ function processDisplay(operation) {
         processArray[0] = `${resultRounded}`;
         processArray[1] = `${operation}`;
         entryArray = [];
-    }
+    } 
+}
+
+equalBtn.onclick = () => equalOperation();
+
+function equalOperation() {
+    processStrOne = processArray[0];
+    operatorOne = processArray[1];
+    processStrTwo = processArray[2];
+    calculate();
+    screenProcess.textContent = `${processStrOne} ${operatorOne} ${processStrTwo} =`;
 }
 
 function calculate() {
