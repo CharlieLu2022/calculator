@@ -32,8 +32,7 @@ function clearEntry() {
 cBtn.onclick = () => clearAll();
 
 function clearAll() {
-    processStr = '';
-    screenProcess.textContent = processStr;
+    screenProcess.textContent = '';
     clearEntry();
     operandOne = '';
     operandTwo = '';
@@ -75,19 +74,22 @@ let operandTwo = '';
 let operator = '';
 let result = '';
 let resultRounded;
+let operatorOld;
 
 function entryDisplay(entry) {
-    if (processArray.length == 0) { //Don't use "="
-        entryArray.push(`${entry}`);
-        entryStrConcat();
-        screenEntry.textContent = entryStr;
-        processArray[0] = entryStr; //Don't use push
+    entryArray.push(`${entry}`);
+    entryStrConcat();
+    screenEntry.textContent = entryStr; //Entry display done
+
+    if (processArray.length == 0) { //Don't use '0 || 1'
+        processArray[0] = entryStr;
+    } else if (processArray.length == 1) {
+        processArray[0] = entryStr;
     } else if (processArray.length == 2) {
-        entryArray.push(`${entry}`);
-        entryStrConcat();
-        screenEntry.textContent = entryStr;
         processArray[2] = entryStr;
-    }
+    } else if (processArray.length == 3) {
+        processArray[2] = entryStr;
+    } 
 }
 
 function entryStrConcat() {
@@ -102,35 +104,36 @@ subtractBtn.onclick = () => processDisplay('−');
 multiplyBtn.onclick = () => processDisplay('×');
 divideBtn.onclick = () => processDisplay('÷');
 
+
+// Arived Upper approach
 function processDisplay(operation) {
     if (processArray.length == 1) {
+        processArray[1] = `${operation}`; //Array index does not work with template literals
         processStrOne = processArray[0];
-        processArray[1] = `${operation}`;
         screenProcess.textContent = `${processStrOne} ${operation}`;
         entryArray = []; //reset for next entry
+        return;
     } else if (processArray.length == 3) {
+        operatorOld = processArray[1];
         processStrTwo = processArray[2];
-        operation = processArray[1];
-        screenProcess.textContent = `${processStrOne} ${operation} ${processStrTwo} =`;
-        calculate();
+        processArray[3] = '='; //Mark presence of '='
+        screenProcess.textContent = `${processStrOne} ${operatorOld} ${processStrTwo} =`;
+        calculate(); //Calculate entryScreen display
         entryArray = [];
-        processArray = [];  //WIP continue from here
+        return;
     }
 }
 
 equalBtn.onclick = () => calculate();
 
 function calculate() {
-    operandOne = processArray[0];
-    operator = processArray[1];
-    operandTwo = entryStr;
-    if (operator === '+') {
+    if (processArray[1] === '+') {
         result = Number(processStrOne) + Number(entryStr);
-    } else if (operator === '−') {
+    } else if (processArray[1] === '−') {
         result = Number(processStrOne) - Number(entryStr);
-    } else if (operator === '×') {
+    } else if (processArray[1] === '×') {
         result = Number(processStrOne) * Number(entryStr);
-    } else if (operator === '÷') {
+    } else if (processArray[1] === '÷') {
         result = Number(processStrOne) / Number(entryStr);
     }
     resultRounded = Math.round(result * 1000) / 1000;
