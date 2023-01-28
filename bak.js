@@ -83,14 +83,18 @@ function entryDisplay(entry) {
         processArray[2] = entryStr;
     } else if (processArray.length == 3) {
         processArray[2] = entryStr;
-    } else if (processArray.length == 4 && processArray[3] == 'equal') {
-        screenProcess.textContent = '';
-        processArray = [];
-        processArray[0] = entryStr;
+    } else if (processArray.length == 4) {
+        processArray[2] = entryStr;
     } else if (processArray.length == 4) {
         processArray[2] = entryStr;
     } 
 } 
+
+
+// else if (processArray.length == 4 && processArray[3] == 'equal') {
+//     clearAll();
+//     entryDisplay(entry)
+// }
 
 function entryStrConcat() {
     entryStr = ''; //reset for a clean concat
@@ -120,7 +124,6 @@ function processDisplay(operation) {
         entryArray = [];
     } else if (processArray.length == 4) {
         processStrOne = processArray[0];
-        processArray[3] = 'dummy';
         calculate();
         screenProcess.textContent = `${resultRounded} ${operation}`;
         processArray[0] = `${resultRounded}`;
