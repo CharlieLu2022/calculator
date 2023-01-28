@@ -59,6 +59,7 @@ sevenBtn.onclick = () => entryDisplay(7);
 eightBtn.onclick = () => entryDisplay(8);
 nineBtn.onclick = () => entryDisplay(9);
 dotBtn.onclick = () => entryDisplay('.');
+plusminusBtn.onclick = () => entryDisplay('-'); //Use hyphen
 // plusminusBtn.onclick = () => entryDisplay('−');
 
 let entryArray = [];
@@ -71,7 +72,13 @@ let result = '';
 let resultRounded;
 
 function entryDisplay(entry) {
-    entryArray.push(`${entry}`);
+    if (entry !== '-') {
+        entryArray.push(`${entry}`);
+    } else if (entry == '-' && entryArray[0] == '-') {
+        entryArray.shift(`${entry}`);
+    } else if (entry == '-') {
+        entryArray.unshift(`${entry}`); //For button +/-
+    }
     entryStrConcat();
     screenEntry.textContent = entryStr; //Entry display done
 
@@ -100,7 +107,7 @@ function entryStrConcat() {
 }
 
 addBtn.onclick = () => processDisplay('+');
-subtractBtn.onclick = () => processDisplay('−');
+subtractBtn.onclick = () => processDisplay('−'); //Not hyphen, for appearance only
 multiplyBtn.onclick = () => processDisplay('×');
 divideBtn.onclick = () => processDisplay('÷');
 
